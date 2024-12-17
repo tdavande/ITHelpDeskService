@@ -6,6 +6,7 @@ from app import db
 from app.models import User, Ticket, Comment
 from app.forms import LoginForm, RegistrationForm, TicketForm, CommentForm
 from flask import Blueprint
+from app.decorators import admin_required
 
 bp = Blueprint('routes', __name__)
 
@@ -81,3 +82,50 @@ def ticket(id):
         flash('Your comment has been added.')
         return redirect(url_for('routes.ticket', id=id))  # Correctly prefixed
     return render_template('ticket.html', title=ticket.title, ticket=ticket, comments=comments, form=form)
+
+@bp.route('/create_admin', methods=['POST'])
+def create_admin():
+    admin_user = User(username='admin', email='admin@example.com', role='admin')
+    admin_user.set_password('adminpassword')
+    db.session.add(admin_user)
+    db.session.commit()
+    return redirect(url_for('routes.admin_panel'))
+
+@bp.route('/admin')
+@login_required
+@admin_required  # Protect this route with admin access control
+def admin_panel():
+    users = User.query.all()
+    tickets = Ticket.query.all()
+    comments = Comment.query.all()
+    return render_template('admin_panel.html', users=users, tickets=tickets, comments=comments)
+
+@bp.route('/admin/delete_ticket/<int:id>')
+@login_required
+@admin_required  # Only admin can delete tickets
+def delete_ticket(id):
+    ticket = Ticket.query.get_or_404(id)
+    db.session.delete(ticket)
+    db.session.commit()
+    flash('Ticket has been deleted.')
+    return redirect(url_for('routes.admin_panel'))
+
+@bp.route('/admin/delete_user/<int:id>')
+@login_required
+@admin_required  # Only admin can delete users
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User has been deleted.')
+    return redirect(url_for('routes.admin_panel'))
+
+@bp.route('/admin/delete_comment/<int:id>')
+@login_required
+@admin_required  # Only admin can delete comments
+def delete_comment(id):
+    comment = Comment.query.get_or_404(id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Comment has been deleted.')
+    return redirect(url_for('routes.admin_panel'))
