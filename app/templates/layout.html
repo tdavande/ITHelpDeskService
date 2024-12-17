@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Help Desk Service</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="{{ url_for('routes.index') }}">Home</a>
+        <a href="{{ url_for('routes.create_ticket') }}">Create Ticket</a>
+        <a href="{{ url_for('routes.logout') }}">Logout</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash {% if 'error' in messages[0] %}error{% else %}success{% endif %}">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Page-specific content goes here -->
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

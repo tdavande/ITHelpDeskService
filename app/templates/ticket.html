@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+  <h1>{{ ticket.title }}</h1>
+  <p>{{ ticket.description }}</p>
+  <h2>Comments</h2>
+  <ul>
+    {% for comment in comments %}
+      <li>{{ comment.content }} - {{ comment.timestamp }}</li>
+    {% endfor %}
+  </ul>
+  <h2>Add Comment</h2>
+  <form method="post" action="{{ url_for('routes.ticket', id=ticket.id) }}">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.content.label }}<br>
+      {{ form.content(cols=32, rows=4) }}<br>
+      {{ form.submit() }}
+    </p>
+  </form>
+{% endblock %}

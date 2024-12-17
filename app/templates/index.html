@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h1>Welcome to the IT Help Desk Service</h1>
+  <a href="{{ url_for('routes.create_ticket') }}">Create Ticket</a>
+  <ul>
+    {% for ticket in tickets %}
+      <li><a href="{{ url_for('routes.ticket', id=ticket.id) }}">{{ ticket.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
