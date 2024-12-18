@@ -10,10 +10,15 @@ from app.decorators import admin_required
 bp = Blueprint('routes', __name__)
 
 @bp.route('/')
-@bp.route('/index')
 @login_required
 def index():
-    tickets = Ticket.query.all()
+    if current_user.role == 'admin':
+        # Admin sees all tickets
+        tickets = Ticket.query.all()
+    else:
+        # Regular user sees only their tickets
+        tickets = Ticket.query.filter_by(user_id=current_user.id).all()
+
     return render_template('index.html', title='Home', tickets=tickets)
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -53,19 +58,21 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 @bp.route('/create_ticket', methods=['GET', 'POST'])
+@login_required
 def create_ticket():
     form = TicketForm()
     if form.validate_on_submit():
+        # Create a new ticket and associate it with the logged-in user
         ticket = Ticket(
             title=form.title.data,
             description=form.description.data,
+            status=form.status.data,
             priority=form.priority.data,
-            status='Open'  # Set default status for new tickets
+            user_id=current_user.id  # Associate ticket with the logged-in user
         )
-        # Save ticket to database
         db.session.add(ticket)
         db.session.commit()
-        return redirect(url_for('routes.index'))  # Redirect to the index page after creating a ticket
+        return redirect(url_for('routes.index'))  # Redirect to the index page to view tickets
     return render_template('create_ticket.html', title='Create Ticket', form=form)
 
 @bp.route('/ticket/<int:id>', methods=['GET', 'POST'])

@@ -11,6 +11,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(64), index=True)
 
+    # Relationship to access tickets created by the user
+    tickets = db.relationship('Ticket', backref='creator', lazy=True)
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -19,6 +22,9 @@ class User(UserMixin, db.Model):
 
     def is_admin(self):
         return self.role == 'admin'
+
+    def __repr__(self):
+        return f'<User {self.username}>'
 
 
 class Ticket(db.Model):
@@ -30,6 +36,11 @@ class Ticket(db.Model):
     created_date = db.Column(db.DateTime, default=db.func.current_timestamp())
     resolved_date = db.Column(db.DateTime, nullable=True)
 
+    # Foreign Key to associate the ticket with a user
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    # Relationship to access the user from a ticket (no backref needed here)
+    user = db.relationship('User')
 
     def __repr__(self):
         return f'<Ticket {self.title}>'
