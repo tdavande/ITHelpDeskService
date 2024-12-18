@@ -2,7 +2,7 @@
 {% block title %}Edit Ticket{% endblock %}
 {% block content %}
   <h1>Edit Ticket</h1>
-  <form method="post" action="{{ url_for('routes.update_ticket', id=ticket.id) }}">
+  <form method="post" action="{{ url_for('routes.update_ticket', ticket_id=ticket.id) }}">
     {{ form.hidden_tag() }}
     <p>
       {{ form.title.label }}<br>

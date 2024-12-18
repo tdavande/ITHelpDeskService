@@ -59,15 +59,14 @@ def create_ticket():
         ticket = Ticket(
             title=form.title.data,
             description=form.description.data,
-            status=form.status.data,
-            priority=form.priority.data
+            priority=form.priority.data,
+            status='Open'  # Set default status for new tickets
         )
+        # Save ticket to database
         db.session.add(ticket)
         db.session.commit()
-        flash('Ticket created successfully!', 'success')
-        return redirect(url_for('routes.index'))
+        return redirect(url_for('routes.index'))  # Redirect to the index page after creating a ticket
     return render_template('create_ticket.html', title='Create Ticket', form=form)
-
 
 @bp.route('/ticket/<int:id>', methods=['GET', 'POST'])
 @login_required
