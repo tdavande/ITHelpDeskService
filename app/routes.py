@@ -118,6 +118,20 @@ def admin_panel():
     comments = Comment.query.all()
     return render_template('admin_panel.html', users=users, tickets=tickets, comments=comments)
 
+@bp.route('/admin/update_ticket_status/<int:ticket_id>', methods=['POST'])
+@login_required
+@admin_required
+def update_ticket_status(ticket_id):
+    ticket = Ticket.query.get_or_404(ticket_id)
+    new_status = request.form.get('status')
+    if new_status:
+        ticket.status = new_status
+        db.session.commit()
+        flash('Ticket status updated successfully!', 'success')
+    else:
+        flash('Invalid status selection', 'danger')
+    return redirect(url_for('routes.admin_panel'))
+
 @bp.route('/admin/delete_ticket/<int:id>')
 @login_required
 @admin_required  # Only admin can delete tickets

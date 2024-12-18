@@ -22,6 +22,23 @@
       </li>
     {% endfor %}
   </ul>
+{% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.title }}</td>
+        <td>{{ ticket.status }}</td>
+        <td>
+            <form action="{{ url_for('routes.update_ticket_status', ticket_id=ticket.id) }}" method="POST">
+                <select name="status">
+                    <option value="open" {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+                    <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="resolved" {% if ticket.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                    <option value="closed" {% if ticket.status == 'closed' %}selected{% endif %}>Closed</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+        </td>
+    </tr>
+{% endfor %}
 
   <h2>Comments</h2>
   <ul>
@@ -32,3 +49,5 @@
     {% endfor %}
   </ul>
 {% endblock %}
+
+
