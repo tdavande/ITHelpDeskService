@@ -65,8 +65,9 @@ def create_ticket():
         db.session.add(ticket)
         db.session.commit()
         flash('Ticket created successfully!', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('routes.index'))
     return render_template('create_ticket.html', title='Create Ticket', form=form)
+
 
 @bp.route('/ticket/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -74,13 +75,17 @@ def ticket(id):
     ticket = Ticket.query.get_or_404(id)
     comments = Comment.query.filter_by(ticket_id=id).all()
     form = CommentForm()
+
     if form.validate_on_submit():
         comment = Comment(content=form.content.data, ticket_id=id, user_id=current_user.id)
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added.')
         return redirect(url_for('routes.ticket', id=id))  # Correctly prefixed
-        return render_template('ticket.html', title=ticket.title, ticket=ticket, comments=comments, form=form)
+
+    # Ensure this return statement is outside the if block
+    return render_template('ticket.html', title=ticket.title, ticket=ticket, comments=comments, form=form)
+
 
 @bp.route('/update_ticket/<int:ticket_id>', methods=['GET', 'POST'])
 def update_ticket(ticket_id):
@@ -93,8 +98,8 @@ def update_ticket(ticket_id):
         ticket.priority = form.priority.data
         db.session.commit()
         flash('Ticket updated successfully!', 'success')
-        return redirect(url_for('index'))
-    return render_template('update_ticket.html', title='Update Ticket', form=form)
+        return redirect(url_for('routes.index'))
+    return render_template('edit_ticket.html', title='Edit Ticket', form=form, ticket=ticket)
 
 @bp.route('/create_admin', methods=['POST'])
 def create_admin():

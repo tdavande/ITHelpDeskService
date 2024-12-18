@@ -7,8 +7,18 @@
     <p>
       {{ form.title.label }}<br>
       {{ form.title(size=32) }}<br>
+
       {{ form.description.label }}<br>
       {{ form.description(cols=32, rows=4) }}<br>
+
+      <!-- Add Status Dropdown -->
+      {{ form.status.label }}<br>
+      {{ form.status() }}<br>
+
+      <!-- Add Priority Dropdown -->
+      {{ form.priority.label }}<br>
+      {{ form.priority() }}<br>
+
       {{ form.submit() }}
     </p>
   </form>

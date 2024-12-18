@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Edit Ticket{% endblock %}
+{% block content %}
+  <h1>Edit Ticket</h1>
+  <form method="post" action="{{ url_for('routes.update_ticket', id=ticket.id) }}">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.title.label }}<br>
+      {{ form.title(size=32) }}<br>
+      
+      {{ form.description.label }}<br>
+      {{ form.description(cols=32, rows=4) }}<br>
+      
+      <!-- Add Status Dropdown for Editing -->
+      {{ form.status.label }}<br>
+      {{ form.status() }}<br>
+      
+      <!-- Add Priority Dropdown for Editing -->
+      {{ form.priority.label }}<br>
+      {{ form.priority() }}<br>
+      
+      {{ form.submit() }}
+    </p>
+  </form>
+{% endblock %}

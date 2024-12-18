@@ -3,12 +3,16 @@
 {% block content %}
   <h1>{{ ticket.title }}</h1>
   <p>{{ ticket.description }}</p>
+  <p><strong>Status:</strong> {{ ticket.status }}</p>  <!-- Display Status -->
+  <p><strong>Priority:</strong> {{ ticket.priority }}</p>  <!-- Display Priority -->
+
   <h2>Comments</h2>
   <ul>
     {% for comment in comments %}
       <li>{{ comment.content }} - {{ comment.timestamp }}</li>
     {% endfor %}
   </ul>
+
   <h2>Add Comment</h2>
   <form method="post" action="{{ url_for('routes.ticket', id=ticket.id) }}">
     {{ form.hidden_tag() }}
