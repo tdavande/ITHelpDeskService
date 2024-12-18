@@ -5,4 +5,4 @@ Flask-Login~=0.6.3
 Flask-WTF
 email-validator
 WTForms~=3.2.1
-Werkzeug==2.2.2
+Werkzeug>=3.1
