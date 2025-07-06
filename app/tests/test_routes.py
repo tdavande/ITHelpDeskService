@@ -66,7 +66,7 @@ class RouteTests(unittest.TestCase):
         with self.app.test_client() as client:
             # FIX: Use the correct username and password for testuser
             self.login('testuser', 'testpass')
-            rv = client.get('/admin_panel')
+            rv = client.get('/admin')
             # This assertion is now correct (403 Forbidden for regular user)
             self.assertEqual(rv.status_code, 403)
 
@@ -74,7 +74,7 @@ class RouteTests(unittest.TestCase):
         with self.app.test_client() as client:
             # FIX: Use the correct username and password for adminuser
             self.login('adminuser', 'adminpass')
-            rv = client.get('/admin_panel')
+            rv = client.get('/admin')
             # This assertion is now correct (200 OK for admin user)
             self.assertEqual(rv.status_code, 200)
 
