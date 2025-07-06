@@ -1,8 +1,9 @@
-# app/forms.py
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.fields.choices import SelectField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
 
 class LoginForm(FlaskForm):
@@ -12,9 +13,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    # Add Length validators for username and password
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=64)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=128)])
     password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
@@ -30,16 +32,17 @@ class RegistrationForm(FlaskForm):
 
 
 class TicketForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
 
-    # Add Status and Priority fields
-    status = SelectField('Status', choices=[('Open', 'Open'), ('In Progress', 'In Progress'), ('Resolved', 'Resolved')],
+    title = StringField('Title', validators=[DataRequired(), Length(min=5, max=100)])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(min=10, max=5000)])
+
+    status = SelectField('Status', choices=[('open', 'Open'), ('in_progress', 'In Progress'), ('resolved', 'Resolved'), ('closed', 'Closed')],
                          validators=[DataRequired()])
-    priority = SelectField('Priority', choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')],
+    priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('critical', 'Critical')],
                            validators=[DataRequired()])
 
     submit = SubmitField('Submit')
+
 class CommentForm(FlaskForm):
-    content = TextAreaField('Comment', validators=[DataRequired()])
+    content = TextAreaField('Comment', validators=[DataRequired(), Length(min=1, max=1000)])
     submit = SubmitField('Add Comment')
