@@ -123,13 +123,13 @@ class FormTests(unittest.TestCase):
 
 
     # --- TicketForm Tests ---
+
     def test_ticket_form_valid_data(self):
-        form = TicketForm(title='My Test Ticket', description='This is a test description.',
-                          status='Open', priority='Low')
-        form.title.data = 'My Test Ticket'
-        form.description.data = 'This is a test description.'
-        form.status.data = 'Open'
-        form.priority.data = 'Low'
+        # Corrected: Ensure 'status' and 'priority' values match the 'choices' in forms.py
+        form = TicketForm(title='Test Ticket Title',
+                          description='This is a very detailed test description for the ticket.',
+                          status='open',    # Use 'open' (lowercase) as per your forms.py choices
+                          priority='low')   # Use 'low' (lowercase) as per your forms.py choices
         self.assertTrue(form.validate())
 
     def test_ticket_form_missing_title(self):
