@@ -1,14 +1,41 @@
 /* styles.css */
+:root {
+  /* Spiced-Up Complementary Color Palette with gradients (elevation removed) */
+  --primary-bg-start: #e0f7fa; /* Lighter turquoise for body top */
+  --primary-bg-end: #b2ebf2;   /* Slightly darker turquoise for body bottom */
+  --secondary-bg-color: #ffffff; /* White remains for clean content areas */
+
+  --header-footer-bg-start: #00796b; /* Dark teal for header/footer top */
+  --header-footer-bg-end: #004d40;   /* Even darker teal for header/footer bottom */
+
+  --nav-link-color: #e0f7fa; /* Very light turquoise for nav links */
+  --nav-link-hover-color: #80cbc4; /* Lighter teal on nav hover */
+
+  --accent-button-bg-start: #4db6ac; /* Medium teal for buttons/highlights */
+  --accent-button-bg-end: #26a69a;   /* Slightly darker teal for buttons/highlights */
+
+  --text-color-dark: #212121; /* Very dark gray for main text */
+  --text-color-light: #f5f5f5; /* Off-white for text on dark backgrounds */
+
+  --alert-success-bg: #e8f5e9; /* Lighter green for success */
+  --alert-success-color: #2e7d32; /* Darker green for success text */
+  --alert-error-bg: #ffebee; /* Lighter red for error */
+  --alert-error-color: #c62828; /* Darker red for error text */
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; /* Slightly more modern font stack */
+  background: linear-gradient(to bottom, var(--primary-bg-start), var(--primary-bg-end)); /* Vertical gradient for body */
+  background-attachment: fixed; /* Ensures gradient covers full height */
   margin: 0;
   padding: 0;
+  color: var(--text-color-dark); /* Dark text for readability */
 }
 
 header {
-  background-color: #333;
+  background: linear-gradient(to right, var(--header-footer-bg-start), var(--header-footer-bg-end)); /* Horizontal gradient for header */
   padding: 10px;
+  /* Removed box-shadow */
 }
 
 nav ul {
@@ -23,42 +50,57 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #fff;
+  color: var(--nav-link-color); /* Light turquoise for navigation links */
   text-decoration: none;
   padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Removed transform transition */
+  border-radius: 4px; /* Slightly rounded corners for links */
 }
 
 nav ul li a:hover {
-  background-color: #575757;
+  background-color: var(--header-footer-bg-end); /* Darker teal on hover */
+  color: var(--nav-link-hover-color); /* Lighter teal text on hover */
+  /* Removed transform: translateY(-2px); */
 }
 
 .container {
   margin: 20px;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
+  background-color: var(--secondary-bg-color); /* White for content containers */
+  border-radius: 12px; /* More rounded corners for a softer look */
+  /* Removed box-shadow */
+  /* Removed transition for transform */
+}
+
+.container:hover {
+  /* Removed transform: translateY(-5px); */
 }
 
 .alert {
   padding: 15px;
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 8px; /* Slightly more rounded alerts */
+  font-weight: bold;
+  /* Removed box-shadow */
 }
 
 .alert.success {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: var(--alert-success-bg);
+  color: var(--alert-success-color);
+  border: 1px solid var(--alert-success-color);
 }
 
 .alert.error {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: var(--alert-error-bg);
+  color: var(--alert-error-color);
+  border: 1px solid var(--alert-error-color);
 }
 
 footer {
   text-align: center;
   padding: 10px;
-  background-color: #333;
-  color: #fff;
+  background: linear-gradient(to right, var(--header-footer-bg-start), var(--header-footer-bg-end)); /* Horizontal gradient for footer */
+  color: var(--text-color-light); /* Off-white text for footer */
   margin-top: 20px;
+
 }
